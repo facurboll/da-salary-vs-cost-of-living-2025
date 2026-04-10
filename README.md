@@ -1,15 +1,22 @@
 # 💰 Salary vs. Cost of Living — Data Analyst: Argentina, USA \& Remote LATAM
 
 !\[Python](https://img.shields.io/badge/Python-3.10+-3776ab?logo=python\&logoColor=white)
+
 !\[Pandas](https://img.shields.io/badge/Pandas-2.x-150458?logo=pandas\&logoColor=white)
+
 !\[Matplotlib](https://img.shields.io/badge/Matplotlib-3.x-11557c)
+
 !\[React](https://img.shields.io/badge/React-Dashboard-61dafb?logo=react\&logoColor=black)
+
 !\[Status](https://img.shields.io/badge/Status-Complete-34d399)
 
-\[!\[Live Dashboard](https://img.shields.io/badge/🔗\_Live\_Dashboard-GitHub\_Pages-fbbf24?style=for-the-badge)](https://facurboll.github.io/da-salary-vs-cost-of-living-2025/)
 !\[Data](https://img.shields.io/badge/Data-Synthetic\_(calibrated)-fbbf24)
 
-> \*\*🇪🇸 Versión en español abajo | 🇺🇸 English version first\*\*
+
+
+\[!\[Live Dashboard](https://img.shields.io/badge/Live\_Dashboard-GitHub\_Pages-fbbf24?style=for-the-badge)](https://facurboll.github.io/da-salary-vs-cost-of-living-2025/)
+
+> \\\*\\\*🇪🇸 Versión en español abajo | 🇺🇸 English version first\\\*\\\*
 
 \---
 
@@ -50,9 +57,9 @@ Analyzed across **3 seniority levels** (Junior, Semi Senior, Senior) and **6 cit
 
 ### Dataset
 
-* **File:** [`data/salary\_vs\_cost\_of\_living\_2025.csv`](data/salary_vs_cost_of_living_2025.csv)
+* **File:** [`data/salary\\\_vs\\\_cost\\\_of\\\_living\\\_2025.csv`](data/salary_vs_cost_of_living_2025.csv)
 * **Records:** 27 (3 scenarios × 3 seniority levels × 3 cities per scenario)
-* **Dictionary:** [`data/data\_dictionary.csv`](data/data_dictionary.csv)
+* **Dictionary:** [`data/data\\\_dictionary.csv`](data/data_dictionary.csv)
 * **FX Rate:** ARS 1,400/USD (blue/MEP, April 2026)
 
 ### Interactive Dashboard
