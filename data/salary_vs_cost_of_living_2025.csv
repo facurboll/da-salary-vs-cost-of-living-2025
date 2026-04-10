@@ -1,0 +1,28 @@
+scenario,city,country,seniority,salary_min_usd,salary_avg_usd,salary_max_usd,rent_usd,expensas_usd,utilities_usd,transport_usd,groceries_usd,health_usd,total_cost_usd,savings_net_usd,salary_cost_ratio,source_salary,source_cost
+Argentina Local,Corrientes,AR,Junior,600,750,900,180,40,35,20,150,35,460,290,1.6,SysArmy;HuCap;Glassdoor AR,Zonaprop;INDEC;relevamiento local
+Argentina Local,Corrientes,AR,Semi Senior,1000,1250,1500,180,40,35,20,150,35,460,790,2.7,SysArmy;HuCap;Glassdoor AR,Zonaprop;INDEC;relevamiento local
+Argentina Local,Corrientes,AR,Senior,1800,2200,2800,180,40,35,20,150,35,460,1740,4.8,SysArmy;HuCap;Glassdoor AR,Zonaprop;INDEC;relevamiento local
+Argentina Local,Buenos Aires,AR,Junior,600,750,900,500,80,50,30,200,50,910,-160,0.8,SysArmy;HuCap;Glassdoor AR,Zonaprop;Infobae;INDEC
+Argentina Local,Buenos Aires,AR,Semi Senior,1000,1250,1500,500,80,50,30,200,50,910,340,1.4,SysArmy;HuCap;Glassdoor AR,Zonaprop;Infobae;INDEC
+Argentina Local,Buenos Aires,AR,Senior,1800,2200,2800,500,80,50,30,200,50,910,1290,2.4,SysArmy;HuCap;Glassdoor AR,Zonaprop;Infobae;INDEC
+Argentina Local,Córdoba,AR,Junior,600,750,900,350,55,40,25,170,40,680,70,1.1,SysArmy;HuCap;Glassdoor AR,Zonaprop;INDEC;relevamiento local
+Argentina Local,Córdoba,AR,Semi Senior,1000,1250,1500,350,55,40,25,170,40,680,570,1.8,SysArmy;HuCap;Glassdoor AR,Zonaprop;INDEC;relevamiento local
+Argentina Local,Córdoba,AR,Senior,1800,2200,2800,350,55,40,25,170,40,680,1520,3.2,SysArmy;HuCap;Glassdoor AR,Zonaprop;INDEC;relevamiento local
+Remoto LATAM,Corrientes,AR,Junior,1500,2000,2500,180,40,35,20,150,35,460,1540,4.3,Near;Interfell;RemoteRocketship;Tecla,Zonaprop;INDEC;relevamiento local
+Remoto LATAM,Corrientes,AR,Semi Senior,2500,3200,4000,180,40,35,20,150,35,460,2740,7.0,Near;Interfell;RemoteRocketship;Tecla,Zonaprop;INDEC;relevamiento local
+Remoto LATAM,Corrientes,AR,Senior,4000,5000,6500,180,40,35,20,150,35,460,4540,10.9,Near;Interfell;RemoteRocketship;Tecla,Zonaprop;INDEC;relevamiento local
+Remoto LATAM,Buenos Aires,AR,Junior,1500,2000,2500,500,80,50,30,200,50,910,1090,2.2,Near;Interfell;RemoteRocketship;Tecla,Zonaprop;Infobae;INDEC
+Remoto LATAM,Buenos Aires,AR,Semi Senior,2500,3200,4000,500,80,50,30,200,50,910,2290,3.5,Near;Interfell;RemoteRocketship;Tecla,Zonaprop;Infobae;INDEC
+Remoto LATAM,Buenos Aires,AR,Senior,4000,5000,6500,500,80,50,30,200,50,910,4090,5.5,Near;Interfell;RemoteRocketship;Tecla,Zonaprop;Infobae;INDEC
+Remoto LATAM,Córdoba,AR,Junior,1500,2000,2500,350,55,40,25,170,40,680,1320,2.9,Near;Interfell;RemoteRocketship;Tecla,Zonaprop;INDEC;relevamiento local
+Remoto LATAM,Córdoba,AR,Semi Senior,2500,3200,4000,350,55,40,25,170,40,680,2520,4.7,Near;Interfell;RemoteRocketship;Tecla,Zonaprop;INDEC;relevamiento local
+Remoto LATAM,Córdoba,AR,Senior,4000,5000,6500,350,55,40,25,170,40,680,4320,7.4,Near;Interfell;RemoteRocketship;Tecla,Zonaprop;INDEC;relevamiento local
+EEUU Local,Austin TX,US,Junior,4500,5500,6500,1400,0,200,250,450,400,2700,2800,2.0,BLS;Glassdoor;Indeed;Salary.com,RentCafe;ApartmentList;C2ER;KFF
+EEUU Local,Austin TX,US,Semi Senior,6500,7500,8500,1400,0,200,250,450,400,2700,4800,2.8,BLS;Glassdoor;Indeed;Salary.com,RentCafe;ApartmentList;C2ER;KFF
+EEUU Local,Austin TX,US,Senior,8000,9500,11000,1400,0,200,250,450,400,2700,6800,3.5,BLS;Glassdoor;Indeed;Salary.com,RentCafe;ApartmentList;C2ER;KFF
+EEUU Local,Miami FL,US,Junior,4500,5500,6500,1800,0,180,200,480,450,3110,2390,1.8,BLS;Glassdoor;Indeed;Salary.com,RentCafe;ApartmentList;C2ER;KFF
+EEUU Local,Miami FL,US,Semi Senior,6500,7500,8500,1800,0,180,200,480,450,3110,4390,2.4,BLS;Glassdoor;Indeed;Salary.com,RentCafe;ApartmentList;C2ER;KFF
+EEUU Local,Miami FL,US,Senior,8000,9500,11000,1800,0,180,200,480,450,3110,6390,3.1,BLS;Glassdoor;Indeed;Salary.com,RentCafe;ApartmentList;C2ER;KFF
+EEUU Local,New York NY,US,Junior,4500,5500,6500,3100,0,200,130,500,450,4380,1120,1.3,BLS;Glassdoor;Indeed;Salary.com,RentCafe;ApartmentList;C2ER;KFF
+EEUU Local,New York NY,US,Semi Senior,6500,7500,8500,3100,0,200,130,500,450,4380,3120,1.7,BLS;Glassdoor;Indeed;Salary.com,RentCafe;ApartmentList;C2ER;KFF
+EEUU Local,New York NY,US,Senior,8000,9500,11000,3100,0,200,130,500,450,4380,5120,2.2,BLS;Glassdoor;Indeed;Salary.com,RentCafe;ApartmentList;C2ER;KFF
