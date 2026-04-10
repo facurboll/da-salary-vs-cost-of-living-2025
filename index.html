@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salary vs Cost of Living — Data Analyst: AR, USA & Remote LATAM</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#06080d;--card:#0d1117;--border:#1b2332;--text:#e8edf5;--sub:#8b99ad;--dim:#4e5a6e;--g:#34d399;--b:#60a5fa;--y:#fbbf24;--r:#f87171}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',system-ui,sans-serif;min-height:100vh}
+.hero{background:linear-gradient(160deg,var(--bg) 0%,#0f1629 40%,#1a0f2e 70%,var(--bg) 100%);padding:48px 24px 36px;text-align:center;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;top:-80px;right:-80px;width:300px;height:300px;background:radial-gradient(circle,rgba(251,191,36,.06) 0%,transparent 70%);border-radius:50%}
+.hero .tag{color:var(--y);font-size:10px;font-weight:700;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px}
+.hero h1{font-size:30px;font-weight:900;letter-spacing:-1.5px;color:#fff;margin-bottom:6px}
+.hero .sub{font-size:15px;color:var(--sub);font-weight:500;margin-bottom:4px}
+.hero .meta{font-size:11px;color:var(--dim);margin-bottom:24px}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.pill{padding:7px 20px;border-radius:24px;border:1px solid var(--border);cursor:pointer;font-size:13px;font-weight:700;background:transparent;color:var(--sub);transition:all .15s;font-family:inherit}
+.pill.active{border:2px solid var(--y);background:rgba(251,191,36,.09);color:var(--y)}
+.container{max-width:880px;margin:0 auto;padding:24px 16px 60px;display:flex;flex-direction:column;gap:22px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px}
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.kpi{text-align:center;border-radius:14px;padding:16px}
+.kpi .label{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.kpi .value{font-size:28px;font-weight:900;font-family:'Space Mono',monospace;letter-spacing:-1px;margin-top:4px}
+.kpi .unit{font-size:10px;color:var(--dim);margin-top:2px}
+.multiplier{background:linear-gradient(135deg,#1a0f2e,#0f1629);border-color:rgba(251,191,36,.27);text-align:center;padding:18px 24px;font-size:13px;color:var(--sub)}
+.multiplier .big{font-size:28px;font-weight:900;color:var(--y);font-family:'Space Mono',monospace;margin:0 4px}
+.section-head h2{font-size:18px;font-weight:800;margin-bottom:4px}
+.section-head p{color:var(--dim);font-size:12px;line-height:1.5;margin-bottom:16px}
+.chart-box{position:relative;width:100%;margin:0 auto}
+.chart-box canvas{width:100%!important}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.badge{font-size:10px;padding:3px 10px;border-radius:12px;font-weight:600}
+.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;font-size:11px}
+.note-box{padding:10px;border-radius:8px;border-left:3px solid}
+.note-box strong{display:block;margin-bottom:2px}
+.insight{border-left:3px solid;padding-left:16px;margin-bottom:16px;font-size:13px;line-height:1.75;color:var(--sub)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;padding:10px 8px;color:var(--dim);font-weight:600;border-bottom:2px solid var(--border)}
+td{padding:10px 8px;border-bottom:1px solid var(--border)}
+.mono{font-family:'Space Mono',monospace;font-weight:700}
+.tr{text-align:right}
+.tc{text-align:center}
+.disclaimer{margin-top:16px;padding:14px;border-radius:8px;font-size:11px;line-height:1.6;background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.2);color:var(--y)}
+.footer{text-align:center;padding:24px 0 0;color:var(--dim);font-size:11px}
+.footer a{color:var(--y);text-decoration:none}
+.legend-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.leg{font-size:10px;padding:3px 10px;border-radius:10px;font-weight:600}
+@media(max-width:640px){
+  .kpi-row,.notes{grid-template-columns:1fr}
+  .hero h1{font-size:22px}
+  .kpi .value{font-size:22px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <p class="tag">Data Analytics Portfolio · Proyecto #3</p>
+  <h1>Salarios vs. Costo de Vida</h1>
+  <p class="sub">Data Analyst · Argentina · EEUU · Remoto LATAM</p>
+  <p class="meta">Datos sintéticos calibrados · Abril 2026 · TC ref: ARS 1.400/USD</p>
+  <div class="pills">
+    <button class="pill active" onclick="setSen(0)">Junior</button>
+    <button class="pill" onclick="setSen(1)">Semi Senior</button>
+    <button class="pill" onclick="setSen(2)">Senior</button>
+  </div>
+</div>
+
+<div class="container">
+  <!-- KPIs -->
+  <div class="kpi-row" id="kpis"></div>
+
+  <!-- Multiplier -->
+  <div class="card multiplier" id="multiplier"></div>
+
+  <!-- Chart 1: Salary -->
+  <div class="card">
+    <div class="section-head">
+      <h2>📊 Comparativa Salarial</h2>
+      <p id="salSub"></p>
+    </div>
+    <div class="chart-box"><canvas id="salaryChart"></canvas></div>
+    <div class="badges">
+      <span class="badge" style="background:rgba(52,211,153,.12);color:var(--g)">AR Local: SysArmy, HuCap, Glassdoor</span>
+      <span class="badge" style="background:rgba(251,191,36,.12);color:var(--y)">Remoto: Near, Interfell, Tecla</span>
+      <span class="badge" style="background:rgba(96,165,250,.12);color:var(--b)">EEUU: BLS, Glassdoor, Indeed</span>
+    </div>
+  </div>
+
+  <!-- Chart 2: Progression -->
+  <div class="card">
+    <div class="section-head">
+      <h2>📈 Progresión Salarial Jr → Sr</h2>
+      <p>Salario promedio USD/mes por seniority</p>
+    </div>
+    <div class="chart-box"><canvas id="progressChart"></canvas></div>
+  </div>
+
+  <!-- Chart 3: Cost -->
+  <div class="card">
+    <div class="section-head">
+      <h2>🏠 Costo de Vida por Ciudad</h2>
+      <p>Monoambiente · persona sola · alquiler + expensas + servicios + transporte + canasta + salud — USD/mes</p>
+    </div>
+    <div class="chart-box"><canvas id="costChart"></canvas></div>
+    <div class="notes">
+      <div class="note-box" style="background:rgba(52,211,153,.06);border-color:var(--g)">
+        <strong style="color:var(--g)">Argentina:</strong>
+        <span style="color:var(--sub)">Prepaga ~$35-50/mes. Mono Corrientes ~$180 vs CABA ~$500.</span>
+      </div>
+      <div class="note-box" style="background:rgba(96,165,250,.06);border-color:var(--b)">
+        <strong style="color:var(--b)">EEUU:</strong>
+        <span style="color:var(--sub)">Health insurance $400-450/mes sin empleador. NYC triplica el alquiler de Austin.</span>
+      </div>
+      <div class="note-box" style="background:rgba(251,191,36,.06);border-color:var(--y)">
+        <strong style="color:var(--y)">Remoto:</strong>
+        <span style="color:var(--sub)">Mismo costo AR local pero salario USD. El delta es ahorro puro.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart 4: Savings -->
+  <div class="card">
+    <div class="section-head">
+      <h2>💰 Ahorro Neto Mensual</h2>
+      <p id="savSub"></p>
+    </div>
+    <div class="chart-box"><canvas id="savingsChart"></canvas></div>
+  </div>
+
+  <!-- Chart 5: Ratio -->
+  <div class="card">
+    <div class="section-head">
+      <h2>⚖️ Poder Adquisitivo Real</h2>
+      <p id="ratSub"></p>
+    </div>
+    <div class="chart-box"><canvas id="ratioChart"></canvas></div>
+    <div class="legend-row">
+      <span class="leg" style="background:rgba(52,211,153,.12);color:var(--g)">≥ 4x Excelente</span>
+      <span class="leg" style="background:rgba(251,191,36,.12);color:var(--y)">2.5x–4x Cómodo</span>
+      <span class="leg" style="background:rgba(96,165,250,.12);color:var(--b)">1.5x–2.5x Ajustado</span>
+      <span class="leg" style="background:rgba(248,113,113,.12);color:var(--r)">< 1.5x Deficitario</span>
+    </div>
+  </div>
+
+  <!-- Purchase table -->
+  <div class="card">
+    <div class="section-head">
+      <h2>🛒 Poder de Compra Concreto</h2>
+      <p id="purSub"></p>
+    </div>
+    <div style="overflow-x:auto">
+      <table id="purchaseTable"></table>
+    </div>
+    <p style="font-size:10px;color:var(--dim);margin-top:8px">Valores en meses de ahorro neto.</p>
+  </div>
+
+  <!-- Insights -->
+  <div class="card" style="border-left:3px solid var(--y)" id="insightsCard"></div>
+
+  <!-- Summary table -->
+  <div class="card">
+    <div class="section-head"><h2>📋 Tabla Resumen</h2></div>
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Escenario</th><th class="tr">Junior</th><th class="tr">Semi Sr</th><th class="tr">Senior</th><th style="font-size:10px">Nota</th></tr></thead>
+        <tbody>
+          <tr><td style="font-weight:700;color:var(--g)">Argentina Local</td><td class="tr mono">$750</td><td class="tr mono">$1,250</td><td class="tr mono">$2,200</td><td style="font-size:10px;color:var(--dim)">Incluye grandes y PyMEs. Bruto → USD al TC blue/MEP.</td></tr>
+          <tr><td style="font-weight:700;color:var(--y)">Remoto LATAM</td><td class="tr mono">$2,000</td><td class="tr mono">$3,200</td><td class="tr mono">$5,000</td><td style="font-size:10px;color:var(--dim)">Contractor USD. Sin obra social ni aguinaldo.</td></tr>
+          <tr><td style="font-weight:700;color:var(--b)">EEUU Local</td><td class="tr mono">$5,500</td><td class="tr mono">$7,500</td><td class="tr mono">$9,500</td><td style="font-size:10px;color:var(--dim)">Bruto. Retención ~22-30% por impuestos no deducida.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Methodology -->
+  <div class="card" style="border-left:3px solid var(--dim)">
+    <div class="section-head"><h2>📐 Metodología y Fuentes</h2></div>
+    <div style="font-size:11px;line-height:1.9;color:var(--dim)">
+      <p><strong style="color:var(--sub)">Dataset:</strong> Sintético, calibrado contra fuentes públicas. Fines educativos y de portafolio.</p>
+      <p><strong style="color:var(--sub)">Salarios AR:</strong> SysArmy, HuCap (iProfesional: Jr $1.58M bruto, Sr $3.71M bruto), Glassdoor AR, Coderhouse, Talently.</p>
+      <p><strong style="color:var(--sub)">Salarios Remoto:</strong> Near Salary Guide 2025/26, Interfell Smart Hiring 2025, RemoteRocketship (avg $63,337/año, 653 postings), Tecla, Atlas.</p>
+      <p><strong style="color:var(--sub)">Salarios EEUU:</strong> BLS, Glassdoor ($93K avg), Indeed ($85K avg), Salary.com ($97.7K mediana), ZipRecruiter (Jr $79K avg).</p>
+      <p><strong style="color:var(--sub)">Costo AR:</strong> Zonaprop Q1 2026 (mono CABA $704.704 ≈ $500 USD), Infobae, INDEC (CBT feb 2026: $1.397.672 familia tipo). Corrientes ~35-40% de CABA.</p>
+      <p><strong style="color:var(--sub)">Costo EEUU:</strong> RentCafe, ApartmentList, Apartments.com, C2ER Index, KFF (health insurance).</p>
+      <p><strong style="color:var(--sub)">TC:</strong> ARS 1.400/USD (blue/MEP abril 2026). <strong style="color:var(--sub)">Scope:</strong> Persona sola, monoambiente, sin dependientes.</p>
+    </div>
+    <div class="disclaimer">⚠️ <strong>Disclaimer:</strong> Datos sintéticos calibrados contra fuentes públicas. Los valores reales varían según empleador, negociación, beneficios, impuestos, contrato y contexto individual. No constituye asesoramiento financiero ni laboral.</div>
+  </div>
+
+  <div class="footer">
+    <p>Análisis por <strong style="color:var(--text)">Facundo Ramírez Boll</strong> · Contador Público & Data Analyst</p>
+    <p><a href="https://github.com/facurboll">github.com/facurboll</a> · LinkedIn · Abril 2026</p>
+  </div>
+</div>
+
+<script>
+// ── DATA ──
+const S = [
+  {id:'ar',label:'Argentina Local',short:'AR Local',color:'#34d399',bg:'rgba(52,211,153,.15)',
+   jr:[600,750,900],ssr:[1000,1250,1500],sr:[1800,2200,2800]},
+  {id:'remote',label:'Remoto LATAM',short:'Remoto',color:'#fbbf24',bg:'rgba(251,191,36,.15)',
+   jr:[1500,2000,2500],ssr:[2500,3200,4000],sr:[4000,5000,6500]},
+  {id:'us',label:'EEUU Local',short:'EEUU',color:'#60a5fa',bg:'rgba(96,165,250,.15)',
+   jr:[4500,5500,6500],ssr:[6500,7500,8500],sr:[8000,9500,11000]},
+];
+const cities=[
+  {name:'Corrientes',grp:'ar',rent:180,exp:40,util:35,trans:20,groc:150,health:35,total:460},
+  {name:'Buenos Aires',grp:'ar',rent:500,exp:80,util:50,trans:30,groc:200,health:50,total:910},
+  {name:'Córdoba',grp:'ar',rent:350,exp:55,util:40,trans:25,groc:170,health:40,total:680},
+  {name:'Austin TX',grp:'us',rent:1400,exp:0,util:200,trans:250,groc:450,health:400,total:2700},
+  {name:'Miami FL',grp:'us',rent:1800,exp:0,util:180,trans:200,groc:480,health:450,total:3110},
+  {name:'New York NY',grp:'us',rent:3100,exp:0,util:200,trans:130,groc:500,health:450,total:4380},
+];
+const senLabels=['Junior','Semi Senior','Senior'];
+const senKeys=['jr','ssr','sr'];
+let cur=1; // default Semi Senior
+const fmt=n=>'$'+Math.round(n).toLocaleString('en-US');
+
+// Charts storage
+let charts={};
+
+function destroyChart(id){if(charts[id]){charts[id].destroy();delete charts[id];}}
+
+function setSen(i){
+  cur=i;
+  document.querySelectorAll('.pill').forEach((p,j)=>p.classList.toggle('active',j===i));
+  render();
+}
+
+function render(){
+  const sk=senKeys[cur], sl=senLabels[cur];
+
+  // KPIs
+  document.getElementById('kpis').innerHTML=S.map(s=>`
+    <div class="card kpi" style="background:${s.bg};border-color:${s.color}33">
+      <p class="label">${s.short}</p>
+      <p class="value" style="color:${s.color}">${fmt(s[sk][1])}</p>
+      <p class="unit">USD/mes promedio</p>
+    </div>`).join('');
+
+  // Multiplier
+  const ratio=(S[1][sk][1]/S[0][sk][1]).toFixed(1);
+  const remCtes=S[1][sk][1]-cities[0].total;
+  document.getElementById('multiplier').innerHTML=`Un <strong style="color:var(--y)">${sl}</strong> remoto gana <span class="big">${ratio}x</span> más que uno local en Argentina y ahorra <strong style="color:var(--g)">${fmt(remCtes)}/mes</strong> viviendo en Corrientes.`;
+
+  // Subtitles
+  document.getElementById('salSub').textContent=`Rango Data Analyst ${sl} — min / promedio / máx — USD/mes`;
+  document.getElementById('savSub').textContent=`Salario ${sl} promedio − costo de vida total. Rojo = déficit.`;
+  document.getElementById('ratSub').textContent=`Ratio salario ${sl} / costo de vida básico mensual`;
+  document.getElementById('purSub').textContent=`Meses de ahorro neto de un ${sl} para compras reales`;
+
+  renderSalaryChart(sk);
+  renderSavingsChart(sk,sl);
+  renderRatioChart(sk);
+  renderPurchaseTable(sk,sl);
+  renderInsights(sk,sl);
+}
+
+function renderSalaryChart(sk){
+  destroyChart('salary');
+  const ctx=document.getElementById('salaryChart').getContext('2d');
+  charts.salary=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:S.map(s=>s.short),
+      datasets:[
+        {label:'Mínimo',data:S.map(s=>s[sk][0]),backgroundColor:'#374151',borderRadius:3},
+        {label:'Promedio',data:S.map(s=>s[sk][1]),backgroundColor:'#fbbf24',borderRadius:3},
+        {label:'Máximo',data:S.map(s=>s[sk][2]),backgroundColor:'#60a5fa',borderRadius:3},
+      ]
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{labels:{color:'#8b99ad',font:{size:11}}}},
+      scales:{
+        x:{ticks:{color:'#8b99ad'},grid:{color:'#1b233266'}},
+        y:{ticks:{color:'#4e5a6e',callback:v=>'$'+(v/1000).toFixed(1)+'k'},grid:{color:'#1b233266'}}
+      }
+    }
+  });
+}
+
+// Progression chart (static)
+function renderProgressionChart(){
+  const ctx=document.getElementById('progressChart').getContext('2d');
+  charts.progression=new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:senLabels,
+      datasets:S.map(s=>({
+        label:s.label,data:senKeys.map(k=>s[k][1]),
+        borderColor:s.color,backgroundColor:s.color+'33',
+        borderWidth:3,pointRadius:6,pointBackgroundColor:s.color,tension:0.3
+      }))
+    },
+    options:{
+      responsive:true,
+      plugins:{legend:{labels:{color:'#8b99ad',font:{size:11}}}},
+      scales:{
+        x:{ticks:{color:'#8b99ad'},grid:{color:'#1b233266'}},
+        y:{ticks:{color:'#4e5a6e',callback:v=>'$'+(v/1000).toFixed(0)+'k'},grid:{color:'#1b233266'}}
+      }
+    }
+  });
+}
+
+// Cost chart (static)
+function renderCostChart(){
+  const labels=cities.map(c=>c.name);
+  const ds=[
+    {label:'Alquiler',data:cities.map(c=>c.rent),backgroundColor:'#60a5fa'},
+    {label:'Expensas',data:cities.map(c=>c.exp),backgroundColor:'#818cf8'},
+    {label:'Servicios',data:cities.map(c=>c.util),backgroundColor:'#fbbf24'},
+    {label:'Transporte',data:cities.map(c=>c.trans),backgroundColor:'#fb923c'},
+    {label:'Canasta',data:cities.map(c=>c.groc),backgroundColor:'#34d399'},
+    {label:'Salud',data:cities.map(c=>c.health),backgroundColor:'#f87171'},
+  ];
+  const ctx=document.getElementById('costChart').getContext('2d');
+  charts.cost=new Chart(ctx,{
+    type:'bar',
+    data:{labels,datasets:ds},
+    options:{
+      indexAxis:'y',responsive:true,
+      plugins:{legend:{labels:{color:'#8b99ad',font:{size:10}}}},
+      scales:{
+        x:{stacked:true,ticks:{color:'#4e5a6e',callback:v=>'$'+v},grid:{color:'#1b233266'}},
+        y:{stacked:true,ticks:{color:'#e8edf5',font:{size:11}},grid:{display:false}}
+      }
+    }
+  });
+}
+
+function renderSavingsChart(sk,sl){
+  destroyChart('savings');
+  const rows=[];
+  cities.filter(c=>c.grp==='ar').forEach(c=>{
+    rows.push({name:c.name+' (Local)',sav:S[0][sk][1]-c.total,col:'#34d399'});
+    rows.push({name:c.name+' (Remoto)',sav:S[1][sk][1]-c.total,col:'#fbbf24'});
+  });
+  cities.filter(c=>c.grp==='us').forEach(c=>{
+    rows.push({name:c.name,sav:S[2][sk][1]-c.total,col:'#60a5fa'});
+  });
+  rows.sort((a,b)=>a.sav-b.sav);
+  const ctx=document.getElementById('savingsChart').getContext('2d');
+  charts.savings=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:rows.map(r=>r.name),
+      datasets:[{
+        label:'Ahorro Neto USD/mes',
+        data:rows.map(r=>r.sav),
+        backgroundColor:rows.map(r=>r.sav>=0?r.col:'#f87171'),
+        borderRadius:4
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,
+      plugins:{legend:{labels:{color:'#8b99ad',font:{size:11}}}},
+      scales:{
+        x:{ticks:{color:'#4e5a6e',callback:v=>fmt(v)},grid:{color:'#1b233266'}},
+        y:{ticks:{color:'#e8edf5',font:{size:10}},grid:{display:false}}
+      }
+    }
+  });
+}
+
+function renderRatioChart(sk){
+  destroyChart('ratio');
+  const rows=[];
+  cities.filter(c=>c.grp==='ar').forEach(c=>{
+    rows.push({name:c.name+' (Local)',r:+(S[0][sk][1]/c.total).toFixed(1)});
+    rows.push({name:c.name+' (Remoto)',r:+(S[1][sk][1]/c.total).toFixed(1)});
+  });
+  cities.filter(c=>c.grp==='us').forEach(c=>{
+    rows.push({name:c.name,r:+(S[2][sk][1]/c.total).toFixed(1)});
+  });
+  rows.sort((a,b)=>a.r-b.r);
+  const ctx=document.getElementById('ratioChart').getContext('2d');
+  charts.ratio=new Chart(ctx,{
+    type:'bar',
+    data:{
+      labels:rows.map(r=>r.name),
+      datasets:[{
+        label:'Ratio Salario/Costo',
+        data:rows.map(r=>r.r),
+        backgroundColor:rows.map(r=>r.r>=4?'#34d399':r.r>=2.5?'#fbbf24':r.r>=1.5?'#60a5fa':'#f87171'),
+        borderRadius:6
+      }]
+    },
+    options:{
+      indexAxis:'y',responsive:true,
+      plugins:{legend:{labels:{color:'#8b99ad',font:{size:11}}},
+        tooltip:{callbacks:{label:ctx=>ctx.parsed.x+'x'}}
+      },
+      scales:{
+        x:{ticks:{color:'#4e5a6e',callback:v=>v+'x'},grid:{color:'#1b233266'}},
+        y:{ticks:{color:'#e8edf5',font:{size:10}},grid:{display:false}}
+      }
+    }
+  });
+}
+
+function renderPurchaseTable(sk,sl){
+  const savs=[
+    {label:'🇦🇷 Ctes Local',s:S[0][sk][1]-cities[0].total},
+    {label:'🇦🇷 Ctes Remoto',s:S[1][sk][1]-cities[0].total},
+    {label:'🇦🇷 BA Remoto',s:S[1][sk][1]-cities[1].total},
+    {label:'🇺🇸 Austin',s:S[2][sk][1]-cities[3].total},
+    {label:'🇺🇸 NYC',s:S[2][sk][1]-cities[5].total},
+  ];
+  const items=[
+    {n:'iPhone 16 (~$1,000)',c:1000},
+    {n:'Notebook Pro (~$1,500)',c:1500},
+    {n:'Auto usado (~$10,000)',c:10000},
+    {n:'Viaje Europa 2 sem (~$3,000)',c:3000},
+  ];
+  const colors=['var(--g)','var(--y)','var(--y)','var(--b)','var(--b)'];
+  let html='<thead><tr><th>Objetivo</th>';
+  savs.forEach((s,i)=>html+=`<th class="tc" style="color:${colors[i]};font-size:11px">${s.label}</th>`);
+  html+='</tr></thead><tbody>';
+  items.forEach(item=>{
+    html+='<tr><td style="font-weight:500;color:var(--sub)">'+item.n+'</td>';
+    savs.forEach(s=>{
+      const m=s.s>0?Math.ceil(item.c/s.s):null;
+      const c=m===null?'var(--r)':m<=3?'var(--g)':m<=6?'var(--y)':m<=12?'var(--b)':'var(--sub)';
+      html+=`<td class="tc mono" style="font-size:13px;color:${c}">${m===null?'∞':m}</td>`;
+    });
+    html+='</tr>';
+  });
+  html+='</tbody>';
+  document.getElementById('purchaseTable').innerHTML=html;
+}
+
+function renderInsights(sk,sl){
+  const remCtes=S[1][sk][1]-cities[0].total;
+  const remBA=S[1][sk][1]-cities[1].total;
+  const usNY=S[2][sk][1]-cities[5].total;
+  const usAus=S[2][sk][1]-cities[3].total;
+  const remCba=S[1][sk][1]-cities[2].total;
+  const ratio=(S[1][sk][1]/S[0][sk][1]).toFixed(1);
+  const ratPow=(S[1][sk][1]/cities[0].total).toFixed(1);
+
+  document.getElementById('insightsCard').innerHTML=`
+    <div class="section-head"><h2>💡 Hallazgos Clave — ${sl}</h2></div>
+    <div class="insight" style="border-color:var(--g)">
+      <strong style="color:var(--g)">Mejor ratio calidad de vida:</strong> Un ${sl} remoto desde Corrientes logra un ratio de <strong>${ratPow}x</strong>. Ahorra <strong>${fmt(remCtes)}/mes</strong>.
+    </div>
+    <div class="insight" style="border-color:var(--y)">
+      <strong style="color:var(--y)">Brecha AR local vs remoto: ${ratio}x.</strong> Un ${sl} local gana ${fmt(S[0][sk][1])}/mes vs ${fmt(S[1][sk][1])}/mes remoto. Requisitos: inglés avanzado + SQL/Python/BI.
+    </div>
+    <div class="insight" style="border-color:var(--b)">
+      <strong style="color:var(--b)">EEUU: alto salario, alto costo.</strong> En NYC el ahorro es ${fmt(usNY)}/mes — ${usNY<remBA?'menos':'más'} que un remoto desde BA (${fmt(remBA)}/mes). Health insurance ~$450/mes no existe en AR.
+    </div>
+    <div class="insight" style="border-color:var(--r)">
+      <strong style="color:var(--r)">Austin, sweet spot de EEUU:</strong> Ahorro ${fmt(usAus)}/mes. Pero un ${sl} remoto desde Córdoba ahorra ${fmt(remCba)}/mes — aún más.
+    </div>`;
+}
+
+// Init
+renderProgressionChart();
+renderCostChart();
+setSen(1); // default Semi Senior
+</script>
+</body>
+</html>
